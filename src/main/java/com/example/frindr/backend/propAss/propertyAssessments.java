@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import com.example.frindr.backend.fruit.location;
 
 public class propertyAssessments {
     private final List<propertyAssessment> assessmentsList;
