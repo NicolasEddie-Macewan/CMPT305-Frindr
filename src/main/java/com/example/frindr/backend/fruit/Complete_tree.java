@@ -66,10 +66,7 @@ public class Complete_tree {
     public List<Tree> getTrees(){return trees;}
     //=================================================================
     //=================================================================
-
-    //=================================================================
-    //=================================================================
-    public List<String> getStrings(Function<Tree,String> param) {
+    private List<String> getStrings(Function<Tree,String> param) {
         return trees.stream()
                 .map(param)
                 .filter(t->!t.isEmpty())
@@ -87,21 +84,57 @@ public class Complete_tree {
     public List<String> getSpeciesCommonStream(){
         return getStrings(t->t.getAboutTree().getSpeciesCommon());
     }
-
+    //=================================================================
+    //=================================================================
+    private Complete_tree sortByIntCompare(Function<Tree,Integer> param,Integer comp,mode operand){
+        return switch (operand) {
+            case lessThan -> new Complete_tree(trees.stream()
+                    .filter(t -> param.apply(t) < comp)
+                    .collect(Collectors.toList()));
+            case equals -> new Complete_tree(trees.stream()
+                    .filter(t -> param.apply(t) == comp)
+                    .collect(Collectors.toList()));
+            case greaterThan -> new Complete_tree(trees.stream()
+                    .filter(t -> param.apply(t) > comp)
+                    .collect(Collectors.toList()));
+        };
+    }
+    public Complete_tree conditionCheck (Integer compare,mode operand){
+        return sortByIntCompare(t->t.getAboutTree().getCondition(),compare,operand);
+    }
+    public Complete_tree diameterCheck (Integer compare,mode operand){
+        return sortByIntCompare(t->t.getAboutTree().getDiameter(),compare,operand);
+    }
+    //=================================================================
+    //=================================================================
+    private List<Integer> getInts(Function<Tree,Integer> param){
+        return trees.stream()
+                .map(param)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+    public List<Integer> getDiameters(){
+        return getInts(t->t.getAboutTree().getDiameter());
+    }
+    public List<Integer> getConditions(){
+        return getInts(t->t.getAboutTree().getCondition());
+    }
+    //=================================================================
+    //=================================================================
     public Complete_tree getFruitStream(String fruitType){
         List<Tree> tree = trees.stream()
                 .filter(t->t.getAboutTree().getFruitType().equals(fruitType))
                 .collect(Collectors.toList());
         return new Complete_tree(tree);
     }
-
+    //=================================================================
+    //=================================================================
     public Complete_tree getFruitListStream(List<String> fruitType){
         List<Tree> tree = trees.stream()
                 .filter(t->fruitType.contains(t.getAboutTree().getFruitType()))
                 .collect(Collectors.toList());
         return new Complete_tree(tree);
     }
-
     //=================================================================
     //=================================================================
     public Complete_tree getFruit(String fruitType){
@@ -195,9 +228,8 @@ public class Complete_tree {
         }
         return  new Complete_tree(selectedTrees);
     }
-    // write it as house Numb
-    // neighbourhood ??
-    // street name -> house number
+    //=================================================================
+    //=================================================================
     private location parseLocation(String uInput){
         if(assessments ==null) {
             try {

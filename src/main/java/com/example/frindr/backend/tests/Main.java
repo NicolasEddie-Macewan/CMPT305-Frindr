@@ -22,56 +22,57 @@ public class Main {
         Scanner input = new Scanner(System.in);
         while (true) {
             try {
-                System.out.print("1:quit\n2:Loop testing\n3:Stream Testing\n4:List Filter Testing\n5:Date Filter Testing\n6:location Testing\nselection: ");
-                int inp  = Integer.parseInt(input.nextLine());
+                System.out.print("1:quit\n2:Loop testing\n3:Stream Testing\n4:List Filter Testing\n5:Date Filter Testing\n6:location Testing\n7:diameter Filter Testing\n8:Condition Filter Testing\nselection: ");
+                int inp = Integer.parseInt(input.nextLine());
                 switch (inp) {
                     case 1: return;
-                    case 2: loopTest(tree); break;
-                    case 3: streamTest(tree); break;
-                    case 4: listTest(tree); break;
-                    case 5: dateTest(tree); break;
+                    case 2: loopTest(tree);break;
+                    case 3: streamTest(tree);break;
+                    case 4: listTest(tree);break;
+                    case 5: dateTest(tree);break;
                     case 6: locationTest(tree);break;
+                    case 7: diameterTest(tree);break;
+                    case 8: conditionCheck(tree);break;
                 }
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("please enter one of the available numbers");
             }
         }
     }
 
-
-//=================================================================
+    //=================================================================
 // this shows how to use standard loop methods
 // =================================================================
-    public static void  loopTest(Complete_tree tree) {
-            List<String> fruits = tree.getFruitTypes();
-            try {
-                for (String fruit : fruits) {
-                    System.out.println("\n" + fruit);
-                    Complete_tree selectFruit = tree.getFruit(fruit);
-                    if (selectFruit == null) {
-                        throw new IllegalArgumentException("Fruit not found");
-                    }
-
-                    List<String> bioNames = selectFruit.getSpeciesAdvanced();
-                    for (String bion : bioNames) {
-                        System.out.println(bion);
-                    }
-
-                    List<String> normName = selectFruit.getCommonSpecies();
-                    for (String norm : normName) {
-                        System.out.println("\t" + norm);
-                    }
+    public static void loopTest(Complete_tree tree) {
+        List<String> fruits = tree.getFruitTypes();
+        try {
+            for (String fruit : fruits) {
+                System.out.println("\n" + fruit);
+                Complete_tree selectFruit = tree.getFruit(fruit);
+                if (selectFruit == null) {
+                    throw new IllegalArgumentException("Fruit not found");
                 }
-            } catch (IllegalAccessError e) {
-                System.out.println(e.getMessage());
-            } catch (NullPointerException e) {
-                System.out.println("Null pointer occurred");
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("why did this happen");
-            }
-        }
 
-//=================================================================
+                List<String> bioNames = selectFruit.getSpeciesAdvanced();
+                for (String bion : bioNames) {
+                    System.out.println(bion);
+                }
+
+                List<String> normName = selectFruit.getCommonSpecies();
+                for (String norm : normName) {
+                    System.out.println("\t" + norm);
+                }
+            }
+        } catch (IllegalAccessError e) {
+            System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("Null pointer occurred");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("why did this happen");
+        }
+    }
+
+    //=================================================================
 // this shows how to use the stream methods
 // =================================================================
     public static void streamTest(Complete_tree tree) {
@@ -91,7 +92,8 @@ public class Main {
             }
         }
     }
-//=================================================================
+
+    //=================================================================
 // this shows how to use the get FruitListStream method used when the number of active fruit filters > 1
 // =================================================================
     public static void listTest(Complete_tree tree) {
@@ -106,22 +108,30 @@ public class Main {
         System.out.println(listTest.getCount());
 
         for (Tree tree1 : listTest.getTrees()) {
-            System.out.println("\n"+tree1);
+            System.out.println("\n" + tree1);
         }
     }
-//=================================================================
+
+    //=================================================================
 // this shows how to use the date filter method
 // =================================================================
     public static void dateTest(Complete_tree tree) {
         Date queryDate;
 
         Scanner input = new Scanner(System.in);
-        while(true){
+        while (true) {
             System.out.print("please enter a date in the formant YYYY/MM/DD or leave blank for default\nDate: ");
             String inp = input.nextLine();
-            if(inp.isEmpty()){queryDate = new Date("1990/01/01");break;
-            }else {try{queryDate = new Date(inp);break;}
-                catch(Exception e){System.out.println(e.getMessage());}
+            if (inp.isEmpty()) {
+                queryDate = new Date("1990/01/01");
+                break;
+            } else {
+                try {
+                    queryDate = new Date(inp);
+                    break;
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
 
@@ -142,10 +152,10 @@ public class Main {
 //=================================================================
 // this shows how to use the Location filter method
 // =================================================================
-    public static void locationTest(Complete_tree tree){
+    public static void locationTest(Complete_tree tree) {
         Scanner input = new Scanner(System.in);
         double radius;
-        while(true) {
+        while (true) {
             System.out.print("please enter Number for a radius in KM or leave blank for default\nRadius: ");
             String inp = input.nextLine();
             if (inp.isEmpty()) {
@@ -161,18 +171,89 @@ public class Main {
         System.out.print("please enter an Address or leave blank for default\nAddress: ");
         String inp = input.nextLine();
         if (inp.isEmpty()) {
-            address = "1713,ROBERTSON PLACE SW";
+            address = "1713,ROBERTSON PLACE SW"; // this is the first element in the xml csv file
         } else {
             address = inp;
         }
         Complete_tree inRad;
 
-        try{
-            inRad = tree.InRadius(radius,address);
-            System.out.println("There are "+inRad.getCount()+" trees with edible fruit within "+radius+ "km of " + address);
-        }catch(Exception e){System.out.println("\n"+e.getMessage()+"\n");}
+        try {
+            inRad = tree.InRadius(radius, address);
+            System.out.println("There are " + inRad.getCount() + " trees with edible fruit within " + radius + "km of " + address);
+        } catch (Exception e) {System.out.println("\n" + e.getMessage() + "\n");}
     }
-}
+//=================================================================
+// this shows how to use the Diameter filter method
+// =================================================================
+    public static void diameterTest(Complete_tree tree) {
+        int diameter;
+        Scanner input = new Scanner(System.in);
+
+        while (true) {
+            try {
+                System.out.print("enter a diameter in m: ");
+                diameter = Integer.parseInt(input.nextLine());
+                if (diameter <= 0) {
+                    throw new IllegalArgumentException("diameter must be a positive number");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Diameter must be a positive Integer");
+            }
+        }
+        System.out.println(tree.getDiameters());
+        Complete_tree diamTest;
+        System.out.println("Less than " + diameter);
+        diamTest = tree.diameterCheck(diameter, Complete_tree.mode.lessThan);
+        System.out.println(diamTest.getCount()+"\n");
+
+        System.out.println("Equals " + diameter);
+        diamTest = tree.diameterCheck(diameter, Complete_tree.mode.equals);
+        System.out.println(diamTest.getCount()+"\n");
+
+        System.out.println("Greater than " + diameter);
+        diamTest = tree.diameterCheck(diameter, Complete_tree.mode.greaterThan);
+        System.out.println(diamTest.getCount()+"\n");
+    }
+//=================================================================
+// this shows how to use the condition filter method
+// =================================================================
+    public static void conditionCheck(Complete_tree tree) {
+        int condition;
+        Scanner input = new Scanner(System.in);
+
+        while (true) {
+            try {
+                System.out.print("enter a Condition out of 100: ");
+                condition = Integer.parseInt(input.nextLine());
+                if (condition <= 0 || condition >= 100) {
+                    throw new IllegalArgumentException("diameter must be a positive number less than 101");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Diameter must be a positive Integer");
+            }
+        }
+        System.out.println(tree.getConditions()+"\n");
+
+        Complete_tree conditionTest;
+
+        System.out.println("Less than");
+        conditionTest = tree.conditionCheck(condition, Complete_tree.mode.lessThan);
+        System.out.println(conditionTest.getCount()+"\n");
+
+        System.out.println("Greater than");
+        conditionTest = tree.conditionCheck(condition, Complete_tree.mode.greaterThan);
+        System.out.println(conditionTest.getCount()+"\n");
+
+        System.out.println("Equals");
+        conditionTest = tree.conditionCheck(condition, Complete_tree.mode.equals);
+        System.out.println(conditionTest.getCount()+"\n");
+    }
+
+// =================================================================
+} // end of program
+// =================================================================
 
 
 

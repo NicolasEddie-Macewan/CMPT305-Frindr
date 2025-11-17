@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
     public class AboutTree {
-        List<String> speciesCommon = new ArrayList<>(); //4 ||4,5
-        List<String> speciesAdvanced = new ArrayList<>(); // 5,6,7 || 6,7,8
-        String fruitType;
-        Integer count;
-        Integer diameter;   // 8 || 9
-        Integer condition; // 9 || 10
-        Date planted; // 10 || 11
+        private List<String> speciesCommon = new ArrayList<>(); //4 ||4,5
+        private List<String> speciesAdvanced = new ArrayList<>(); // 5,6,7 || 6,7,8
+        private String fruitType;
+        private Integer count;
+        private Integer diameter;   // 8 || 9
+        private Integer condition; // 9 || 10
+        private Date planted; // 10 || 11
         //=================================================================
         //=================================================================
         public AboutTree(String speciesCommon, String gens, String species, String cultivar, String fruitType,String count,String diameter,String condition,String planted) {
@@ -91,6 +91,12 @@ import java.util.stream.StreamSupport;
         public Date getPlanted() {
             return planted;
         }
+        //=================================================================
+        //=================================================================
+        public Integer getDiameter() {return diameter;}
+        //=================================================================
+        //=================================================================
+        public Integer getCondition() {return condition;}
 
         public boolean equals(AboutTree o){
             return this.getSpeciesCommon().equals(o.getSpeciesCommon())
