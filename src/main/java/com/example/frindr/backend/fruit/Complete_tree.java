@@ -95,6 +95,13 @@ public class Complete_tree {
         return new Complete_tree(tree);
     }
 
+    public Complete_tree getFruitListStream(List<String> fruitType){
+        List<Tree> tree = trees.stream()
+                .filter(t->fruitType.contains(t.getAboutTree().getFruitType()))
+                .collect(Collectors.toList());
+        return new Complete_tree(tree);
+    }
+
     //=================================================================
     //=================================================================
     public Complete_tree getFruit(String fruitType){
@@ -108,8 +115,6 @@ public class Complete_tree {
         if(selectedTrees.isEmpty()){throw new IllegalArgumentException("invalid fruitType");}
         return new Complete_tree(selectedTrees);
     }
-
-
     public List<String> getSpeciesAdvanced() {
         List<String> species = new ArrayList<>();
         for  (Tree tree : trees){
@@ -120,7 +125,6 @@ public class Complete_tree {
         if (species.isEmpty()){throw new IllegalArgumentException("invalid species");}
         return species;
     }
-
     public List<String> getCommonSpecies() {
         List<String> commonSpecies = new ArrayList<>();
         for  (Tree tree : trees){
@@ -141,7 +145,6 @@ public class Complete_tree {
     }
     //=================================================================
     //=================================================================
-
     public Complete_tree dateFilter(Date date,mode key){
         List<Tree> selectedTrees = new ArrayList<>();
         switch (key) {
@@ -171,7 +174,6 @@ public class Complete_tree {
                 break;
         }
         return  new Complete_tree(selectedTrees);
-
     }
     public enum mode{
         lessThan,
@@ -197,8 +199,13 @@ public class Complete_tree {
     // neighbourhood ??
     // street name -> house number
     private location parseLocation(String uInput){
-        try{assessments = new propertyAssessments("Property_Assessment_Data_2025.csv");
-        } catch (IOException e) {System.out.println(e.getMessage() +"does not exist");}
+        if(assessments ==null) {
+            try {
+                assessments = new propertyAssessments("Property_Assessment_Data_2025.csv");
+            } catch (IOException e) {
+                System.out.println(e.getMessage() + "does not exist");
+            }
+        }
 
         uInput = uInput.toUpperCase();
         String[] userInputs = uInput.split(",");
@@ -206,12 +213,14 @@ public class Complete_tree {
         if (!assessments.getStreetNames().contains(userInputs[1])){
             throw new IllegalArgumentException("Street doesn't exist");
         }
+
         propertyAssessments street = assessments.checkStreet(userInputs[1]);
         List<propertyAssessment> houses = street.findHouseNumb(userInputs[0]);
+        if (houses.isEmpty()){throw new IllegalArgumentException("No houses found");}
         if (houses.size() > 2) {
-            Double latitude = 0.0;
-            Double longitude = 0.0;
-            Integer count =0;
+            double latitude = 0.0;
+            double longitude = 0.0;
+            int count =0;
             for (propertyAssessment house : houses ) {
                 latitude += house.getLocation().getLatitude();
                 longitude += house.getLocation().getLongitude();

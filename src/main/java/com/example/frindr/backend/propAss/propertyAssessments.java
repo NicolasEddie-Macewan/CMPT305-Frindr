@@ -1,5 +1,5 @@
-package com.example.frindr.backend.propAss;//ID 3109665
-// name Owen Woollam
+package com.example.frindr.backend.propAss;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import com.example.frindr.backend.fruit.location;
 
 public class propertyAssessments {
@@ -72,17 +74,22 @@ public class propertyAssessments {
     //======================================================================
     //======================================================================
     private static List<propertyAssessment> sortList(List<propertyAssessment> assessments) {
-        if (assessments.size()==1){
-            return assessments;
-        }
-        assessments.sort(new Comparator<propertyAssessment>() {
-            @Override
-            public int compare(propertyAssessment o1, propertyAssessment o2) {
-                return Integer.compare(o1.getHouse().getAssessedValue(), o2.getHouse().getAssessedValue());
-            }
-        });
-        return assessments;
+        return assessments.stream()
+                .sorted(Comparator.comparing(l -> l.getHouse().getAssessedValue()))
+                .collect(Collectors.toList());
     }
+
+//        if (assessments.size()==1){
+//            return assessments;
+//        }
+//        assessments.sort(new Comparator<propertyAssessment>() {
+//            @Override
+//            public int compare(propertyAssessment o1, propertyAssessment o2) {
+//                return Integer.compare(o1.getHouse().getAssessedValue(), o2.getHouse().getAssessedValue());
+//            }
+//        });
+//        return assessments;
+//    }
     //======================================================================
     //======================================================================
     public int getCount() {
@@ -188,12 +195,8 @@ public class propertyAssessments {
         }
         for(int i =0 ;i<o.getCount();i++){
             int testAccountNumber = this.assessmentsList.get(i).getAccountNum();
-                try{
-                    boolean b = testAccountNumber == o.checkAccount(testAccountNumber).getAccountNum();
-                }catch (IllegalArgumentException e) {
-                    throw e;
-                }
-            }
+            boolean b = testAccountNumber == o.checkAccount(testAccountNumber).getAccountNum();
+        }
         return true;
     }
     //======================================================================

@@ -48,7 +48,7 @@ public class house {
         return garage;
     }
 
-    public int getAssessedValue() {
+    public Integer getAssessedValue() {
         return assessedValue;
     }
 
