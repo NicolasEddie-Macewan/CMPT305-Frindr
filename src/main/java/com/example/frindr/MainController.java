@@ -1,5 +1,6 @@
 package com.example.frindr;
 
+import com.example.frindr.ui.MenuBuilder;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -13,22 +14,29 @@ public class MainController {
 
     @FXML private AnchorPane rootPane;
     @FXML private HBox topButtonBar;
+    private final MenuBuilder menuBuilder = new MenuBuilder();
+    private VBox filters;
 
     // The currently visible menu (filters or settings)
     private VBox activeMenu;
     private Pane overlay;
 
-    // ----------------------------------------------------------
-    // PUBLIC HANDLERS CALLED FROM FXML
-    // ----------------------------------------------------------
-
     @FXML
-    private void showFiltersMenu() {
-        VBox filters = createMenu("Filters",
-                new Button("F Test 1"),
+    public void initialize() {
+        filters = createFiltersMenu();
+    }
+
+    private VBox createFiltersMenu() {
+        TitledPane fruitFilters = menuBuilder.createFruitFilters();
+        return createMenu("Filters",
+                fruitFilters,
                 new Button("F Test 2"),
                 new Button("F Test 3")
         );
+    }
+
+    @FXML
+    private void showFiltersMenu() {
         showMenu(filters);
     }
 
