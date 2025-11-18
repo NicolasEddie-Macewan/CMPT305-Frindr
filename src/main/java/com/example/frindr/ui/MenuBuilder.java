@@ -36,4 +36,25 @@ public class MenuBuilder {
         fruitFilters.setExpanded(false);
         return fruitFilters;
     }
+
+    public TitledPane createNeighbourhoodFilters() {
+        List<String> neighbourhoods = List.of(
+                "Westmount",
+                "Bonnie Doon",
+                "Strathcona",
+                "Riverdale",
+                "Highlands",
+                "Glenora"
+        );
+
+        List<CheckBox> checkBoxes = neighbourhoods.stream()
+                .map(CheckBox::new)
+                .toList();
+        VBox content = new VBox();
+        content.getChildren().addAll(checkBoxes);
+
+        TitledPane neighbourhoodFilters = new TitledPane("Neighbourhoods", content);
+        neighbourhoodFilters.setExpanded(false);
+        return neighbourhoodFilters;
+    }
 }

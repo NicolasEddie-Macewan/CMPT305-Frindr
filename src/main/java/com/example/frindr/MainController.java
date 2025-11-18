@@ -15,7 +15,8 @@ public class MainController {
     @FXML private AnchorPane rootPane;
     @FXML private HBox topButtonBar;
     private final MenuBuilder menuBuilder = new MenuBuilder();
-    private VBox filters;
+    private VBox filtersMenu;
+    private VBox settingsMenu;
 
     // The currently visible menu (filters or settings)
     private VBox activeMenu;
@@ -23,31 +24,37 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        filters = createFiltersMenu();
+        filtersMenu = createFiltersMenu();
+        settingsMenu = createSettingsMenu();
     }
 
     private VBox createFiltersMenu() {
         TitledPane fruitFilters = menuBuilder.createFruitFilters();
+        TitledPane neighbourhoodFilters = menuBuilder.createNeighbourhoodFilters();
+        CheckBox likelyBearsFruit = new CheckBox("Likely Bearing Fruit");
         return createMenu("Filters",
                 fruitFilters,
-                new Button("F Test 2"),
-                new Button("F Test 3")
+                neighbourhoodFilters,
+                likelyBearsFruit
+        );
+    }
+
+    private VBox createSettingsMenu() {
+        return createMenu("Settings",
+                new Button("S Test 1"),
+                new Button("S Test 2"),
+                new Button("S Test 3")
         );
     }
 
     @FXML
     private void showFiltersMenu() {
-        showMenu(filters);
+        showMenu(filtersMenu);
     }
 
     @FXML
     private void showSettingsMenu() {
-        VBox settings = createMenu("Settings",
-                new Button("S Test 1"),
-                new Button("S Test 2"),
-                new Button("S Test 3")
-        );
-        showMenu(settings);
+        showMenu(settingsMenu);
     }
 
 
