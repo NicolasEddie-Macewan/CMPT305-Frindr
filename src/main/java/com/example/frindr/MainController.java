@@ -1,5 +1,6 @@
 package com.example.frindr;
 
+import com.example.frindr.ui.MenuBuilder;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -13,33 +14,47 @@ public class MainController {
 
     @FXML private AnchorPane rootPane;
     @FXML private HBox topButtonBar;
+    private final MenuBuilder menuBuilder = new MenuBuilder();
+    private VBox filtersMenu;
+    private VBox settingsMenu;
 
     // The currently visible menu (filters or settings)
     private VBox activeMenu;
     private Pane overlay;
 
-    // ----------------------------------------------------------
-    // PUBLIC HANDLERS CALLED FROM FXML
-    // ----------------------------------------------------------
-
     @FXML
-    private void showFiltersMenu() {
-        VBox filters = createMenu("Filters",
-                new Button("F Test 1"),
-                new Button("F Test 2"),
-                new Button("F Test 3")
-        );
-        showMenu(filters);
+    public void initialize() {
+        filtersMenu = createFiltersMenu();
+        settingsMenu = createSettingsMenu();
     }
 
-    @FXML
-    private void showSettingsMenu() {
-        VBox settings = createMenu("Settings",
+    private VBox createFiltersMenu() {
+        TitledPane fruitFilters = menuBuilder.createFruitFilters();
+        TitledPane neighbourhoodFilters = menuBuilder.createNeighbourhoodFilters();
+        CheckBox likelyBearsFruit = new CheckBox("Likely Bearing Fruit");
+        return createMenu("Filters",
+                fruitFilters,
+                neighbourhoodFilters,
+                likelyBearsFruit
+        );
+    }
+
+    private VBox createSettingsMenu() {
+        return createMenu("Settings",
                 new Button("S Test 1"),
                 new Button("S Test 2"),
                 new Button("S Test 3")
         );
-        showMenu(settings);
+    }
+
+    @FXML
+    private void showFiltersMenu() {
+        showMenu(filtersMenu);
+    }
+
+    @FXML
+    private void showSettingsMenu() {
+        showMenu(settingsMenu);
     }
 
 
