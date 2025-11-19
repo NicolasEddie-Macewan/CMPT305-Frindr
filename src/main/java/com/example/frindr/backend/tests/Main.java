@@ -3,9 +3,7 @@ package com.example.frindr.backend.tests;
 import com.example.frindr.backend.fruit.Complete_tree;
 import com.example.frindr.backend.fruit.Tree;
 import com.example.frindr.backend.fruit.Date;
-
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,18 +21,17 @@ public class Main {
         Scanner input = new Scanner(System.in);
         while (true) {
             try {
-                System.out.print("1:quit\n2:Loop testing\n3:Stream Testing\n4:List Filter Testing\n5:Date Filter Testing\n6:location Testing\n7:diameter Filter Testing\n8:Condition Filter Testing\nselection: ");
+                System.out.print("1:quit\n2:check if fruiting\n3:Stream Testing\n4:List Filter Testing\n5:Date Filter Testing\n6:location Testing\n7:diameter Filter Testing\n8:Condition Filter Testing\nselection: ");
                 int inp = Integer.parseInt(input.nextLine());
                 switch (inp) {
                     case 1: return;
-                    case 2: loopTest(tree);break;
+                    case 2: checkFruitBearable(tree);break;
                     case 3: streamTest(tree);break;
                     case 4: listTest(tree);break;
                     case 5: dateTest(tree);break;
                     case 6: locationTest(tree);break;
                     case 7: diameterTest(tree);break;
                     case 8: conditionCheck(tree);break;
-                    case 9: checkFruitBearable(tree);break;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("please enter one of the available numbers");
@@ -42,39 +39,7 @@ public class Main {
         }
     }
 
-    //=================================================================
-// this shows how to use standard loop methods
-// =================================================================
-    public static void loopTest(Complete_tree tree) {
-        List<String> fruits = tree.getFruitTypes();
-        try {
-            for (String fruit : fruits) {
-                System.out.println("\n" + fruit);
-                Complete_tree selectFruit = tree.getFruit(fruit);
-                if (selectFruit == null) {
-                    throw new IllegalArgumentException("Fruit not found");
-                }
-
-                List<String> bioNames = selectFruit.getSpeciesAdvanced();
-                for (String bion : bioNames) {
-                    System.out.println(bion);
-                }
-
-                List<String> normName = selectFruit.getCommonSpecies();
-                for (String norm : normName) {
-                    System.out.println("\t" + norm);
-                }
-            }
-        } catch (IllegalAccessError e) {
-            System.out.println(e.getMessage());
-        } catch (NullPointerException e) {
-            System.out.println("Null pointer occurred");
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("why did this happen");
-        }
-    }
-
-    //=================================================================
+//=================================================================
 // this shows how to use the stream methods
 // =================================================================
     public static void streamTest(Complete_tree tree) {
@@ -138,6 +103,8 @@ public class Main {
         }
 
         Complete_tree dateTest;
+
+        // ideally in the filters menu we have a buttong to select the enum value
         dateTest = tree.dateFilter(queryDate, Complete_tree.mode.lessThan);
         System.out.println(dateTest.getFruitNamesStreams());
         System.out.println(dateTest.getCount());
@@ -149,7 +116,6 @@ public class Main {
         dateTest = tree.dateFilter(queryDate, Complete_tree.mode.greaterThan);
         System.out.println(dateTest.getFruitNamesStreams());
         System.out.println(dateTest.getCount());
-
     }
 //=================================================================
 // this shows how to use the Location filter method
@@ -173,7 +139,7 @@ public class Main {
         System.out.print("please enter an Address or leave blank for default\nAddress: ");
         String inp = input.nextLine();
         if (inp.isEmpty()) {
-            address = "1713,ROBERTSON PLACE SW"; // this is the first element in the xml csv file
+            address = "1713,ROBERTSON PLACE SW"; // this is the first element in the csv file
         } else {
             address = inp;
         }
@@ -203,6 +169,7 @@ public class Main {
                 System.out.println("Diameter must be a positive Integer");
             }
         }
+        // ideally in the filters menu we have a buttong to select the enum value
         System.out.println(tree.getDiameters());
         Complete_tree diamTest;
         System.out.println("Less than " + diameter);
@@ -238,6 +205,7 @@ public class Main {
         }
         System.out.println(tree.getConditions()+"\n");
 
+        // ideally in the filters menu we have a buttong to select the enum value
         Complete_tree conditionTest;
 
         System.out.println("Less than");
@@ -261,9 +229,7 @@ public class Main {
         for (Tree tre :  fruitingTrees.getTrees()) {
             System.out.println(tre.getAboutTree().getPlanted());
         }
-
     }
-
 
 // =================================================================
 } // end of program

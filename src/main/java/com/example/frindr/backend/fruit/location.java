@@ -30,10 +30,18 @@ public class location {
     }
     //=================================================================
     //=================================================================
-    public double getdistance(location other) {
-        double dy=this.latitude - other.latitude;
-        double dx=this.longitude - other.longitude;
-        return Math.sqrt(dx*dx + dy*dy);
+    public double getDistanceHaversine(location other) {
+        double dLat = Math.toRadians(this.latitude - other.latitude);
+        double dLon = Math.toRadians(this.longitude - other.longitude);
+        double a = Math.pow(Math.sin(dLat / 2), 2) +
+                Math.pow(Math.sin(dLon / 2), 2) *
+                        Math.cos(Math.toRadians(this.latitude)) *
+                        Math.cos(Math.toRadians(other.latitude));
+        double rad = 6371;
+        double c = 2 * Math.asin(Math.sqrt(a));
+        return rad * c;
+
+
     }
     public double getLatitude() {
         return latitude;

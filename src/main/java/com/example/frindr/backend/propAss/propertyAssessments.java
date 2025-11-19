@@ -200,6 +200,7 @@ public class propertyAssessments {
         return true;
     }
     //======================================================================
+    // legacy methods no longer in use
     //======================================================================
     public List<String> getStreetNames() {
         List<String> Streets = new ArrayList<>();
@@ -211,8 +212,6 @@ public class propertyAssessments {
         }
         return Streets;
     }
-    //======================================================================
-    //======================================================================
     public propertyAssessments checkStreet(String street) {
         List<propertyAssessment> streetList = new ArrayList<>();
         for (propertyAssessment aPa : assessmentsList) {
@@ -222,6 +221,15 @@ public class propertyAssessments {
         return new propertyAssessments(streetList);
     }
 
+    //======================================================================
+    // get street names and street name compare functions
+    //======================================================================
+    public propertyAssessments checkStreetStream(String street) {
+        return new propertyAssessments(assessmentsList.stream()
+                .filter(p->p.getHouse().getStreetName().equals(street))
+                .collect(Collectors.toList()));
+    }
+
     public List<String> getStreetNamesStream(){
         return assessmentsList.stream()
                 .map(propertyAssessment -> propertyAssessment.getHouse().getStreetName())
@@ -229,7 +237,6 @@ public class propertyAssessments {
                 .distinct()
                 .collect(Collectors.toList());
     }
-
     //======================================================================
     // Find house numb is only to be used in conjunction with check street
     //======================================================================
@@ -242,5 +249,11 @@ public class propertyAssessments {
         }
         if(houseList.isEmpty()){throw new IllegalArgumentException("HouseNumber "+houseNum+" Doesn't Exist");}
         return houseList;
+    }
+    public location findHouseNumber(String houseNum) {
+        return assessmentsList.stream()
+                .filter(p->p.getHouse().getHouseNum().equals(houseNum))
+                .map(propertyAssessment::getLocation)
+                .findFirst().orElse(null);
     }
 }
