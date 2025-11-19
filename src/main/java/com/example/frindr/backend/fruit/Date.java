@@ -35,6 +35,7 @@ public class Date {
     public String toString() {
         return year + "-" + month + "-" + day;
     }
+
     public Integer compare(Date o) {
         int compval =  this.compareYear(o);
         if (compval < 0 ){return -1;}
@@ -48,15 +49,15 @@ public class Date {
         return 0;
     }
     private Integer compareYear(Date o){
-        int compare =  o.getYear()- this.year;
+        int compare =  this.year- o.getYear();
         return Integer.compare(compare, 0);
     }
     private Integer compareMonth(Date o){
-        int compare = o.getMonth() - this.month;
+        int compare = this.month-o.getMonth();
         return Integer.compare(compare, 0);
     }
     private Integer compareDay(Date o){
-        int compare = o.getDay() - this.day;
+        int compare = this.day- o.getDay();
         return Integer.compare(compare, 0);
     }
 }

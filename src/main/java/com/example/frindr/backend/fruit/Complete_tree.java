@@ -7,10 +7,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.time.LocalDate;
 
 public class Complete_tree {
     private String filename;
@@ -178,36 +180,48 @@ public class Complete_tree {
     }
     //=================================================================
     //=================================================================
-    public Complete_tree dateFilter(Date date,mode key){
-        List<Tree> selectedTrees = new ArrayList<>();
-        switch (key) {
-            case lessThan:
-                for (Tree tree : trees) {
-                    if (date.compare(tree.getAboutTree().getPlanted()) <= -1) {
-                        selectedTrees.add(tree);
-                    }
-                }
-                if (selectedTrees.isEmpty()){throw new IllegalArgumentException("No elements meet "+key+" "+date.toString());}
-                break;
-            case equals:
-                for (Tree tree : trees) {
-                    if (date.compare(tree.getAboutTree().getPlanted()) == 0) {
-                        selectedTrees.add(tree);
-                    }
-                }
-                if (selectedTrees.isEmpty()){throw new IllegalArgumentException("No elements meet "+key+" "+date.toString());}
-                break;
-            case greaterThan:
-                for (Tree tree : trees) {
-                    if (date.compare(tree.getAboutTree().getPlanted()) >= 1) {
-                        selectedTrees.add(tree);
-                    }
-                }
-                if (selectedTrees.isEmpty()){throw new IllegalArgumentException("No elements meet "+key+" "+date.toString());}
-                break;
-        }
-        return  new Complete_tree(selectedTrees);
+    public Complete_tree dateFilter(Date date,mode key) {
+        return switch (key) {
+            case lessThan -> dateCompare(date, -1);
+            case equals -> dateCompare(date, -0);
+            case greaterThan -> dateCompare(date, 1);
+        };
     }
+    private Complete_tree dateCompare(Date date,int value){
+        return new Complete_tree(trees.stream()
+                .filter(t->t.getAboutTree().getPlanted().compare(date)==value)
+                .collect(Collectors.toList()));
+    }
+
+//        List<Tree> selectedTrees = new ArrayList<>();
+//        switch (key) {
+//            case lessThan:
+//                for (Tree tree : trees) {
+//                    if (date.compare(tree.getAboutTree().getPlanted()) <= -1) {
+//                        selectedTrees.add(tree);
+//                    }
+//                }
+//                if (selectedTrees.isEmpty()){throw new IllegalArgumentException("No elements meet "+key+" "+date.toString());}
+//                break;
+//            case equals:
+//                for (Tree tree : trees) {
+//                    if (date.compare(tree.getAboutTree().getPlanted()) == 0) {
+//                        selectedTrees.add(tree);
+//                    }
+//                }
+//                if (selectedTrees.isEmpty()){throw new IllegalArgumentException("No elements meet "+key+" "+date.toString());}
+//                break;
+//            case greaterThan:
+//                for (Tree tree : trees) {
+//                    if (date.compare(tree.getAboutTree().getPlanted()) >= 1) {
+//                        selectedTrees.add(tree);
+//                    }
+//                }
+//                if (selectedTrees.isEmpty()){throw new IllegalArgumentException("No elements meet "+key+" "+date.toString());}
+//                break;
+//        }
+//        return  new Complete_tree(selectedTrees);
+
     public enum mode{
         lessThan,
         equals,
@@ -264,6 +278,11 @@ public class Complete_tree {
     }
     public double getDistanceMeters(double angle){
         return (angle/360) * 2*Math.PI*6371.2;
+    }                                         // change this value depending on years to bear fruit
+    public Complete_tree canBearFruit(){           //    |
+        LocalDate currentDate = LocalDate.now();   //    v
+        Date checkDate =  new Date(currentDate.getYear()-5 +"/"+currentDate.getMonthValue()+"/"+ currentDate.getDayOfMonth());
+        return  dateFilter(checkDate,mode.lessThan);
     }
 }
 

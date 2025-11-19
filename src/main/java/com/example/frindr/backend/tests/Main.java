@@ -5,6 +5,7 @@ import com.example.frindr.backend.fruit.Tree;
 import com.example.frindr.backend.fruit.Date;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -33,6 +34,7 @@ public class Main {
                     case 6: locationTest(tree);break;
                     case 7: diameterTest(tree);break;
                     case 8: conditionCheck(tree);break;
+                    case 9: checkFruitBearable(tree);break;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("please enter one of the available numbers");
@@ -250,6 +252,18 @@ public class Main {
         conditionTest = tree.conditionCheck(condition, Complete_tree.mode.equals);
         System.out.println(conditionTest.getCount()+"\n");
     }
+//=================================================================
+// this shows how to use system time for bearing fruit
+// =================================================================
+    public static void checkFruitBearable(Complete_tree tree) {
+        Complete_tree fruitingTrees = tree.canBearFruit();
+        System.out.println("\n"+fruitingTrees.getCount()+"\n");
+        for (Tree tre :  fruitingTrees.getTrees()) {
+            System.out.println(tre.getAboutTree().getPlanted());
+        }
+
+    }
+
 
 // =================================================================
 } // end of program

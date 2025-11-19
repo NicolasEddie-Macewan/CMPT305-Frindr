@@ -222,6 +222,14 @@ public class propertyAssessments {
         return new propertyAssessments(streetList);
     }
 
+    public List<String> getStreetNamesStream(){
+        return assessmentsList.stream()
+                .map(propertyAssessment -> propertyAssessment.getHouse().getStreetName())
+                .filter(street -> street.compareTo("") != 0)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
     //======================================================================
     // Find house numb is only to be used in conjunction with check street
     //======================================================================
