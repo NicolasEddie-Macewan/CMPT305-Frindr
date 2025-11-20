@@ -256,4 +256,12 @@ public class propertyAssessments {
                 .map(propertyAssessment::getLocation)
                 .findFirst().orElse(null);
     }
+
+    public List<String> getNeighbourhoodNames() {
+        return assessmentsList.stream()
+                .map(p -> p.getNeighbourhood().getHood())
+                .distinct()
+                .filter(n -> !n.isEmpty())
+                .toList();
+    }
 }
