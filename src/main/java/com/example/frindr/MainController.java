@@ -1,5 +1,6 @@
 package com.example.frindr;
 
+import com.example.frindr.backend.fruit.Complete_tree;
 import com.example.frindr.ui.MenuBuilder;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -12,9 +13,10 @@ import javafx.util.Duration;
 
 public class MainController {
 
+    Complete_tree trees;
     @FXML private AnchorPane rootPane;
     @FXML private HBox topButtonBar;
-    private final MenuBuilder menuBuilder = new MenuBuilder();
+    private MenuBuilder menuBuilder;
     private VBox filtersMenu;
     private VBox settingsMenu;
 
@@ -24,6 +26,12 @@ public class MainController {
 
     @FXML
     public void initialize() {
+        try {
+            trees = new Complete_tree();
+        } catch (Exception e) {
+            System.err.println("Error initializing data: " + e.getMessage());
+        }
+        menuBuilder = new MenuBuilder(trees);
         filtersMenu = createFiltersMenu();
         settingsMenu = createSettingsMenu();
     }
