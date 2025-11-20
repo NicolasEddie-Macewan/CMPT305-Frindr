@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -69,8 +70,8 @@ public class Complete_tree {
     private List<String> getStrings(Function<Tree,String> param) {
         return trees.stream()
                 .map(param)
-                .filter(t->!t.isEmpty())
                 .distinct()
+                .filter(t->!t.isEmpty())
                 .collect(Collectors.toList());
     }
 
@@ -193,14 +194,23 @@ public class Complete_tree {
     }
     //=================================================================
     //=================================================================
-    public Complete_tree InRadius(Double radius,String uInput){
-        if(radius.equals(0.0)){throw new IllegalArgumentException("Please enter a valid radius value");}
-        if(uInput.isEmpty()){throw new IllegalArgumentException("Please enter an address");}
+    public Complete_tree InRadiusNeighbourhood(Double radius, String uInput) {
+        if (radius.equals(0.0)) {
+            throw new IllegalArgumentException("Please enter a valid radius value");
+        }
+        if (uInput.isEmpty()) {
+            throw new IllegalArgumentException("Please enter an address");
+        }
         location checkpoint = parseLocation(uInput);
-        if (checkpoint == null){throw new IllegalArgumentException("invalid address");}
+        if (checkpoint == null) {throw new IllegalArgumentException("invalid address");}
+        return InRadius(radius, checkpoint);
+    }
+
+    public Complete_tree InRadius(Double radius,location checkpoint){
         return new Complete_tree(
                 trees.stream()
                         .filter(t->radius>= checkpoint.getDistanceHaversine(t.getCitylocation().getCoordinates()))
+                        .sorted(Comparator.comparing(t->checkpoint.getDistanceHaversine(t.getCitylocation().getCoordinates())))
                         .collect(Collectors.toList())
         );
     }

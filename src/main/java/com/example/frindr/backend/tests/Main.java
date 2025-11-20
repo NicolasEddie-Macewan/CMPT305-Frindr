@@ -3,6 +3,7 @@ package com.example.frindr.backend.tests;
 import com.example.frindr.backend.fruit.Complete_tree;
 import com.example.frindr.backend.fruit.Tree;
 import com.example.frindr.backend.fruit.Date;
+import com.example.frindr.backend.fruit.location;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
         while (true) {
             try {
-                System.out.print("1:quit\n2:check if fruiting\n3:Stream Testing\n4:List Filter Testing\n5:Date Filter Testing\n6:location Testing\n7:diameter Filter Testing\n8:Condition Filter Testing\nselection: ");
+                System.out.print("1:quit\n2:check if fruiting\n3:Stream Testing\n4:List Filter Testing\n5:Date Filter Testing\n6:location Testing\n7:diameter Filter Testing\n8:Condition Filter Testing\n9:location test City Centre\nselection: ");
                 int inp = Integer.parseInt(input.nextLine());
                 switch (inp) {
                     case 1: return;
@@ -29,9 +30,10 @@ public class Main {
                     case 3: streamTest(tree);break;
                     case 4: listTest(tree);break;
                     case 5: dateTest(tree);break;
-                    case 6: locationTest(tree);break;
+                    case 6: StringlocationTest(tree);break;
                     case 7: diameterTest(tree);break;
                     case 8: conditionCheck(tree);break;
+                    case 9:
                 }
             } catch (NumberFormatException e) {
                 System.out.println("please enter one of the available numbers");
@@ -60,7 +62,7 @@ public class Main {
         }
     }
 
-    //=================================================================
+//=================================================================
 // this shows how to use the get FruitListStream method used when the number of active fruit filters > 1
 // =================================================================
     public static void listTest(Complete_tree tree) {
@@ -120,7 +122,7 @@ public class Main {
 //=================================================================
 // this shows how to use the Location filter method
 // =================================================================
-    public static void locationTest(Complete_tree tree) {
+    public static void StringlocationTest(Complete_tree tree) {
         Scanner input = new Scanner(System.in);
         double radius;
         while (true) {
@@ -146,7 +148,7 @@ public class Main {
         Complete_tree inRad;
 
         try {
-            inRad = tree.InRadius(radius, address);
+            inRad = tree.InRadiusNeighbourhood(radius, address);
             System.out.println("There are " + inRad.getCount() + " trees with edible fruit within " + radius + "km of " + address);
         } catch (Exception e) {System.out.println("\n" + e.getMessage() + "\n");}
     }
@@ -231,6 +233,30 @@ public class Main {
         }
     }
 
+    public static void LocationLocationTest(Complete_tree tree) {
+        Scanner input = new Scanner(System.in);
+        double radius;
+        while (true) {
+            System.out.print("please enter Number for a radius in KM or leave blank for default\nRadius: ");
+            String inp = input.nextLine();
+            if (inp.isEmpty()) {
+                radius = 10.0;break;
+            } else {
+                try {radius = Double.parseDouble(inp);
+                    if (radius<0){throw new IllegalArgumentException("radius must be a positive number");}
+                    break;
+                } catch (Exception e) {System.out.println(e.getMessage());}
+            }
+        }
+        location address = new location(53.5439, 113.4923); // city centre co-ordinates
+
+        Complete_tree inRad;
+        try {
+            inRad = tree.InRadius(radius, address);
+            System.out.println(inRad.getCount()+"\n");
+        }
+        catch (Exception e){System.out.println(e.getMessage());}
+    }
 // =================================================================
 } // end of program
 // =================================================================
