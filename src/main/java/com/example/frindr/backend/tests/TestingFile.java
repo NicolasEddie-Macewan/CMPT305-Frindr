@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Main {
+public class TestingFile {
     public static void main(String[] args) {
         Complete_tree tree;
         try {
@@ -249,12 +249,13 @@ public class Main {
                 } catch (Exception e) {System.out.println(e.getMessage());}
             }
         }
-        location address = new location(53.5439, 113.4923); // city centre co-ordinates
+        location address = new location(53.5439, -113.4923); // city centre co-ordinates
 
         Complete_tree inRad;
         try {
             inRad = tree.InRadius(radius, address);
             System.out.println(inRad.getCount()+"\n");
+            System.out.println(inRad.getTrees().getFirst().toString()+"\n");
         }
         catch (Exception e){System.out.println(e.getMessage());}
     }
