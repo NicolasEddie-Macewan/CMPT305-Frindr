@@ -33,8 +33,9 @@ public class Main {
                     case 6: StringlocationTest(tree);break;
                     case 7: diameterTest(tree);break;
                     case 8: conditionCheck(tree);break;
-                    case 9:
+                    case 9: LocationLocationTest(tree);break;
                 }
+
             } catch (NumberFormatException e) {
                 System.out.println("please enter one of the available numbers");
             }
