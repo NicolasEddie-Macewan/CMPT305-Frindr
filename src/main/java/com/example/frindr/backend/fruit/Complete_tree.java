@@ -21,6 +21,7 @@ public class Complete_tree {
     public Complete_tree() throws IOException {
         this.filename = "Trees_edible.csv";
         trees = readDataList(this.filename);
+        assessments = new propertyAssessments("Property_Assessment_Data_2025.csv");
     }
 
     public Complete_tree(List<Tree> trees){
@@ -80,6 +81,8 @@ public class Complete_tree {
     public List<String> getSpeciesAdvancedStream(){return getStrings(t->t.getAboutTree().getSpeciesBiological());}
 
     public List<String> getSpeciesCommonStream(){return getStrings(t->t.getAboutTree().getSpeciesCommon());}
+
+    public propertyAssessments getAssessments(){return assessments;}
     //=================================================================
     //=================================================================
     private Complete_tree sortByIntCompare(Function<Tree,Integer> param,Integer comp,mode operand){
@@ -217,13 +220,13 @@ public class Complete_tree {
     //=================================================================
     //=================================================================
     private location parseLocation(String uInput){
-        if(assessments ==null) {
+        /* if(assessments ==null) {
             try {
                 assessments = new propertyAssessments("Property_Assessment_Data_2025.csv");
             } catch (IOException e) {
                 System.out.println(e.getMessage() + "does not exist");
             }
-        }
+        } */
         uInput = uInput.toUpperCase();
         String[] userInputs = uInput.split(",");
         if (userInputs.length != 2){throw new IllegalArgumentException("Format:House Number,Street Name");}

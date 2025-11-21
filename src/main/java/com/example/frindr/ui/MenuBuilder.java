@@ -1,5 +1,6 @@
 package com.example.frindr.ui;
 
+import com.example.frindr.backend.fruit.Complete_tree;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
@@ -7,6 +8,12 @@ import javafx.scene.layout.VBox;
 import java.util.List;
 
 public class MenuBuilder {
+    private Complete_tree trees;
+
+    public MenuBuilder(Complete_tree trees) {
+        this.trees = trees;
+    }
+
     public TitledPane createFruitFilters() {
         List<String> fruit = List.of(
                 "Crabapple",
@@ -38,14 +45,12 @@ public class MenuBuilder {
     }
 
     public TitledPane createNeighbourhoodFilters() {
-        List<String> neighbourhoods = List.of(
-                "Westmount",
-                "Bonnie Doon",
-                "Strathcona",
-                "Riverdale",
-                "Highlands",
-                "Glenora"
-        );
+        List<String> neighbourhoods = trees.getAssessments().getNeighbourhoodNames();
+
+        neighbourhoods = neighbourhoods.stream()
+                .map(String::toLowerCase)
+                .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1))
+                .toList();
 
         List<CheckBox> checkBoxes = neighbourhoods.stream()
                 .map(CheckBox::new)
