@@ -45,7 +45,12 @@ public class MenuBuilder {
     }
 
     public TitledPane createNeighbourhoodFilters() {
-        List<String> neighbourhoods = List.of("");
+        List<String> neighbourhoods = trees.getAssessments().getNeighbourhoodNames();
+
+        neighbourhoods = neighbourhoods.stream()
+                .map(String::toLowerCase)
+                .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1))
+                .toList();
 
         List<CheckBox> checkBoxes = neighbourhoods.stream()
                 .map(CheckBox::new)
